@@ -1,4 +1,4 @@
-# WebGL WindImage — [Demo](https://github.com/OriginalSin/Leaflet.WindImageWebGL)
+# WebGL WindImage — [Demo](https://originalsin.github.io/Leaflet.WindImageWebGL/)
 
 A WebGL visualization of wind grids.
 
