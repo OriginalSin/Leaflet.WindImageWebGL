@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Image Transform Interactive Example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="//www.kosmosnimki.ru/lib/geomixer_1.3/geomixer-src.js?key=E5FB6CCB5D23B5E119D2F1B26BCC57BD"></script>
+    <link href="//www.kosmosnimki.ru/lib/geomixer_1.3/geomixer.css" rel="stylesheet" />
+
+    <script src="./src/L.WindImageWebGL.js"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+        }
+		.outer-info {
+			position: absolute;
+			top: 19px;
+			left: 0;
+			right: 0;
+			text-align: center
+		}
+		.info {
+			padding: 6px 8px;
+			font: 14px/18px Arial, Helvetica, sans-serif;
+			background: rgba(255,255,255,0.8);
+			color: #777;
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+		.leaflet-image-layer {
+			pointer-events: none;
+}
+    </style>
+
+</head>
+<body>
+	<div id="map"></div>
+	<script>
+		var quickLooks = [
+		{
+			anchorsLatLngs: [[90, -180], [90, 180], [-90, 180], [-90, -180]],
+			src: './wind/2016112200.png'
+		}
+		];
+		var files = ['./wind/2016112000.png', './wind/2016112006.png', './wind/2016112012.png', './wind/2016112018.png', './wind/2016112100.png', './wind/2016112106.png', './wind/2016112112.png', './wind/2016112118.png'];
+		var current = quickLooks[0];
+		var map = new L.Map('map')
+			.fitBounds(L.latLngBounds(current.anchorsLatLngs));
+
+		var layersControl = L.control.layers({
+			Google: L.tileLayer('//mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'),
+			Map: L.tileLayer.Mercator('//vec03.maps.yandex.net/tiles?l=map&v=17.09.21-1&x={x}&y={y}&z={z}&scale=1&lang=ru_RU', {
+				maxZoom: 21,
+				maxNativeZoom: 17
+			}).addTo(map)
+		}, {}, {position: 'topleft'}).addTo(map);
+
+			var imageTransform = L.windImageWebGL(current.src, current.anchorsLatLngs, { opacity: 0.5, files: files, disableSetClip: false })
+				.addTo(map);
+	</script>
+    
+    <a href="//github.com/OriginalSin/ImageTransformWebGL" target="_blank">
+        <img style="position: absolute; top: 0; right: 0; border: 0;z-index: 500;" src="//camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
+    </a>
+</body>
+</html>
