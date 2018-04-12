@@ -40,14 +40,10 @@
 <body>
 	<div id="map"></div>
 	<script>
-		var quickLooks = [
-		{
+		var current = {
 			anchorsLatLngs: [[90, -180], [90, 180], [-90, 180], [-90, -180]],
 			src: './wind/2016112200.png'
-		}
-		];
-		var files = ['./wind/2016112000.png', './wind/2016112006.png', './wind/2016112012.png', './wind/2016112018.png', './wind/2016112100.png', './wind/2016112106.png', './wind/2016112112.png', './wind/2016112118.png'];
-		var current = quickLooks[0];
+		};
 		var map = new L.Map('map')
 			.fitBounds(L.latLngBounds(current.anchorsLatLngs));
 
@@ -57,10 +53,13 @@
 				maxZoom: 21,
 				maxNativeZoom: 17
 			}).addTo(map)
-		}, {}, {position: 'topleft'}).addTo(map);
-
-			var imageTransform = L.windImageWebGL(current.src, current.anchorsLatLngs, { opacity: 0.5, files: files, disableSetClip: false })
-				.addTo(map);
+		}, {
+			Wind: L.windImageWebGL(current.src, current.anchorsLatLngs, {
+					opacity: 0.5,
+					files: ['./wind/2016112000.png', './wind/2016112006.png', './wind/2016112012.png', './wind/2016112018.png', './wind/2016112100.png', './wind/2016112106.png', './wind/2016112112.png', './wind/2016112118.png'],
+					disableSetClip: false
+				}).addTo(map)
+		}, {position: 'topleft'}).addTo(map);
 	</script>
 
     <a href="//github.com/OriginalSin/Leaflet.WindImageWebGL" target="_blank">

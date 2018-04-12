@@ -80,30 +80,30 @@ var ext = L.extend({
     },
 
     _initImage: function () {
-		L.gmx.workerPromise.then(function(ev) {
-			L.gmx.getBitmap(this._url).then(function(ev) {
-				if (ev.imageBitmap) {
-					this._imgNode = ev.imageBitmap;
-					this._imageReady();
-				} else {
-					console.warn('bitmap not found: ', this._url);
-				}
-				if (this.options.files) {
-					Promise.all(this.options.files.map(L.gmx.getBitmap)).then(function(arr) {
-						var nm = 0,
-							setNext = function() {
-								var it = arr[nm++];
-								if (nm >= arr.length) {nm = 0;}
-								this._imageBitmap = this._createTexture(it.imageBitmap);
-								this._redraw();
-							};
-						setInterval(setNext.bind(this), 100);
-
-console.log('ddddddd', arr)
-					}.bind(this));
-				}
+		if (!this._imgNode) {
+			L.gmx.workerPromise.then(function(ev) {
+				L.gmx.getBitmap(this._url).then(function(ev) {
+					if (ev.imageBitmap) {
+						this._imgNode = ev.imageBitmap;
+						this._imageReady();
+					} else {
+						console.warn('bitmap not found: ', this._url);
+					}
+					if (this.options.files) {
+						Promise.all(this.options.files.map(L.gmx.getBitmap)).then(function(arr) {
+							var nm = 0,
+								setNext = function() {
+									var it = arr[nm++];
+									if (nm >= arr.length) {nm = 0;}
+									this._imageBitmap = this._createTexture(it.imageBitmap);
+									this._redraw();
+								};
+							setInterval(setNext.bind(this), 100);
+						}.bind(this));
+					}
+				}.bind(this));
 			}.bind(this));
-		}.bind(this));
+		}
 
         this._image = L.DomUtil.create('div', 'leaflet-image-layer');
 		this._image.appendChild(this._canvas);
